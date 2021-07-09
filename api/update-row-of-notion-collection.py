@@ -34,9 +34,16 @@ class handler(BaseHTTPRequestHandler):
         for row in result:
             # filter (official filter not works)
             if (dic['filter']['title'] == row.title):
+                # for responses
+                jsonPage = JsonPage()
+
                 for key, item in dic["properties"].items():
                     setattr(row, key,  trimValue(item["value"]))
+                    setattr(jsonPage, key, trimValue(item["value"]))
 
+                jsonStr = jsonPage.toJSON()
+
+        self.wfile.write(jsonStr.encode())
         return
 
 
