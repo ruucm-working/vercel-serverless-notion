@@ -30,6 +30,9 @@ class handler(BaseHTTPRequestHandler):
         client = NotionClient(
             token_v2=dic["token_v2"])
         cv = client.get_collection_view(dic["collectionUrl"])
+        properties = dic["properties"].split(",")
+
+        print('properties', properties)
 
         collectionTitle = cv.collection.name
         collection_default = cv.default_query().execute()
@@ -38,11 +41,12 @@ class handler(BaseHTTPRequestHandler):
 
         for idx, page in enumerate(collection_default):
             jsonPage = JsonPage()
-            jsonPage.title = page.title
-            jsonPage.email = page.email
-            jsonPage.profileImage = page.profileImage
-            jsonStr = jsonPage.toJSON()
 
+            for idx, property in enumerate(properties):
+                # jsonPage[property] = page[property]
+                setattr(jsonPage, property, getattr(page, property))
+
+            jsonStr = jsonPage.toJSON()
             resultList.append(jsonStr)
 
         resultListStr = "[" + ','.join(resultList) + "]"
