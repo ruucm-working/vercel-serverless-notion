@@ -35,6 +35,15 @@ class handler(BaseHTTPRequestHandler):
             # filter (official filter not works)
             if (dic['filter']['title'] == row.title):
                 for key, item in dic["properties"].items():
-                    setattr(row, key,  item["value"])
+                    setattr(row, key,  trimValue(item["value"]))
 
         return
+
+
+def trimValue(value):
+    if (value == "True"):
+        return True
+    elif (value == "False"):
+        return False
+    else:
+        return value
