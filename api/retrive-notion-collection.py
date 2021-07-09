@@ -32,8 +32,6 @@ class handler(BaseHTTPRequestHandler):
         cv = client.get_collection_view(dic["collectionUrl"])
         properties = dic["properties"].split(",")
 
-        print('properties', properties)
-
         collectionTitle = cv.collection.name
         collection_default = cv.default_query().execute()
 
